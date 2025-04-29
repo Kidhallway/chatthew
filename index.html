@@ -54,6 +54,7 @@
                     let message = getMessage();
                     let username = getUsername();
                     sendMessage({username, message});
+                    say(username, message)
                     setMessage("");
                 }
 
