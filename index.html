@@ -1,69 +1,80 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="./trystero-nostr.min.js" type="module"></script>
-        <title>
-            Chat Online
-        </title>
-    </head>
-    <body>
-        <input type="text" placeholder="Username" id="username">
-        <input type="text" placeholder="Room Id" id="roomId">
-        <button id="join">join</button>
+  <head>
+    <title>Chat with Friends</title>
+  </head>
+  <body>
+    <input type="text" placeholder="Username" id="username">
+    <input type="text" placeholder="Room Id"  id="roomId">
+    <button id="join">Join</button>
 
-        <textarea readonly id="history"></textarea>
-        <input type="text" placeholder="Type a message" id="message">
-        <button id="send">Send</button>
-        
-        <script type="module">
-            import * as trystero from "./trystero-nostr.min.js";
-            function getUsername(username) {
-                return document.getElementById("username").value || "Stupid Nameless loser.";
-            }
-            function setUsername() {
-                document.getElementById("username").value = username;
-            }
-            function getRoomId() {
-                return document.getElementById("roomId").value || "Default Room";
-            }
-            function setRoomId(roomId) {
-                document.getElementById("roomId").value = roomId;
-            }
-            function getMessage() {
-                return document.getElementById("message").value || "";
-            }
-            function setMessage(message) {
-                document.getElementById("message").value = message;
-            }
-            function say(username, message) {
-                document.getElementById("history").value +=`${username}: ${message}\n`
-            }
-            say("System", "Hello World!");
+    <textarea id="history"></textarea>
+    <input type="text" placeholder="Type a message" id="message">
+    <button id="send">Send</button>
 
-            function joinRoom() {
-                let roomId = getRoomId();
-                trystero.joinRoom({
-                    appId: "#1fan"
-                }, roomId)
+    <script type="module">
+      import * as trystero from "./trystero-nostr.min.js";
 
-                let [
-                    sendMessage,
-                    onMessage,
-                ]= room.makeAction("message");
-                document.getElementById("send").onclick = function () {
-                    let message = getMessage();
-                    let username = getUsername();
-                    sendMessage({username, message});
-                    say(username, message)
-                    setMessage("");
-                }
+      function getUsername() {
+        return document.getElementById("username").value || "?";
+      }
 
-                onMessage(function({username, message}) {
-                    say(username, message)
-                })
-            }
+      function setUsername(username) {
+        document.getElementById("username").value = username;
+      }
 
-            document.getElementById("join".onclick) = joinRoom
-        </script>
-    </body>
+      function getRoomId() {
+        return document.getElementById("roomId").value || "?";
+      }
+
+      function setRoomId(roomId) {
+        document.getElementById("roomId").value = roomId;
+      }
+
+      function getMessage() {
+        return document.getElementById("message").value || "";
+      }
+
+      function setMessage(message) {
+        document.getElementById("message").value = message;
+      }
+
+      function say(username, message) {
+        document.getElementById("history").value += `${username}: ${message}\n`;
+      }
+
+      say("System", "Hello World!");
+
+      function joinRoom() {
+        let roomId = getRoomId();
+
+        say("System", `Joining room ${roomId} as ${getUsername()}`);
+
+        let room = trystero.joinRoom({
+          appId: "mister-mcgee/chat"
+        }, roomId)
+
+        let [
+          sendMessage,
+          onMessage,
+        ] = room.makeAction("message");
+
+        document.getElementById("send").onclick = function() {
+          let username = getUsername();
+          let message  = getMessage ();
+
+          sendMessage({username, message});
+          say(username, message);
+          setMessage("");
+        }
+
+        onMessage(function({username, message}) {
+          say(username, message);
+        })
+      }
+
+      document.getElementById("join").onclick = joinRoom;
+
+    </script>
+  </body>
 </html>
