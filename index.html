@@ -70,19 +70,22 @@
             }
     
             onMessage(function({username, message}) {
-              say(username, message);
+                if(message != "") {
+                  say(username, message);} else
+                 return
+
             })        
     
             room.onPeerJoin(peerId => {
               let username = getUsername();
-              sendMessage({username, message: `Hello! ${peerId}`});
-              say(username, `Hello! ${peerId}`);
+              sendMessage({username, message: `${peerId} Has Logged On`});
+              say(username, `${peerId} Has Logged On`);
             })
     
             room.onPeerLeave(peerId => {
               let username = getUsername();
-              sendMessage({username, message: `Bye! ${peerId}`});
-              say(username, `Bye! ${peerId}`);
+              sendMessage({username, message: `${peerId} Is Offline`});
+              say(username, `${peerId} Is Offline`);
             })
           }
     
