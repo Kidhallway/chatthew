@@ -51,7 +51,7 @@
             say("System", `Joining room ${roomId} as ${getUsername()}`);
     
             let room = trystero.joinRoom({
-              appId: "mister-mcgee/chat",
+              appId: "kidhallway/chatthew",
               relayRedundancy: 10,
             }, roomId)
     
@@ -71,8 +71,9 @@
     
             onMessage(function({username, message}) {
                 if(message != "") {
-                  say(username, message);} else
-                 return
+                  say(username, message);} else {
+                 return                    
+                  }
 
             })        
     
